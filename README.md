@@ -36,16 +36,16 @@ This repo rebuilds the stack and adds measurable upgrades that raise LitQA‑v2 
 ```mermaid
 graph TD
   Q["User Question"] -->|Condense| CQ["Condensed Query"]
-  CQ -->|Dense (8)| DENSE
-  CQ -->|BM25 (32)| BM25
+  CQ -->|Dense| DENSE
+  CQ -->|BM25| BM25
   DENSE --> RRF["RRF Fusion"]
   BM25 --> RRF
   RRF --> RR["Cross-Encoder Rerank"]
   RR --> CC["Context Compressor"]
-  CC --> G["Llama-3-8B (Groq)"]
+  CC --> G["Llama-3-8B / Groq"]
   G --> SV["Self-Verification"]
   SV -->|VALID| OUT["Answer + Citations"]
-  SV -->|INVALID| ALT["Re-answer with top-2 ctx"]
+  SV -->|INVALID| ALT["Re-answer (top‑2 ctx)"]
   DENSE --retrieve--> DENSE_DB["FAISS HNSW"]
 ```
 
