@@ -35,23 +35,18 @@ This repo rebuilds the stack and adds measurable upgrades that raise LitQA‑v2 
 
 ```mermaid
 graph TD
-    Q[User Question] -->|LLM condense| CQ[Condensed Query]
-    CQ -->|Dense(8)| DENSE
-    CQ -->|BM25(32)| BM25
-    DENSE --> RRF
-    BM25 --> RRF
-    RRF --> RR[Cross‑Encoder Rerank]
-    RR --> CC[Context Compressor]\n(dedupe + top‑3 sent)
-    CC --> G[Groq Llama‑3‑8B]\n(answer‑only JSON)
-    G --> SV[Self‑Verification Guard]
-    SV -->|VALID| OUT[Answer + Citations]
-    SV -->|INVALID| ALT[Re‑answer with top‑2 ctx]
-
-    subgraph Vector DB
-        style Vector DB fill:#f3f3f3,stroke:#999,stroke-width:1px
-        DENSE_DB[(FAISS HNSW 40 k passages)]
-    end
-    DENSE --retrieve--> DENSE_DB
+  Q[User&nbsp;Question] -->|LLM&nbsp;condense| CQ[Condensed&nbsp;Query]
+  CQ -->|Dense&nbsp;(8)| DENSE
+  CQ -->|BM25&nbsp;(32)| BM25
+  DENSE --> RRF[RRF&nbsp;Fusion]
+  BM25 --> RRF
+  RRF --> RR[Cross‑Encoder&nbsp;Rerank]
+  RR --> CC[Context&nbsp;Compressor]
+  CC --> G[Groq&nbsp;Llama‑3‑8B]
+  G --> SV[Self‑Verification]
+  SV -->|VALID| OUT[Answer&nbsp;+&nbsp;Citations]
+  SV -->|INVALID| ALT[Re‑answer<br/>(top‑2&nbsp;ctx)]
+  DENSE --retrieve--> DENSE_DB[(FAISS&nbsp;HNSW)]
 ```
 
 **Highlights**
